@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.lizhen.demo.mapper.AaaaMapper">
+    <resultMap id="AaaaResultMap" type="com.example.lizhen.demo.bean.Aaaa">
+        <result column="fd_id" jdbcType="VARCHAR" property="fdId"></result>
+        <result column="fd_parent_id" jdbcType="VARCHAR" property="fdParentId"></result>
+        <result column="fd_name" jdbcType="VARCHAR" property="fdName"></result>
+    </resultMap>
+
+    <select id="getAaaa" resultMap="AaaaResultMap" resultType="com.example.lizhen.demo.bean.Aaaa">
+        select  * from aaaa where  fd_id=#{fdId}
+    </select>
+</mapper>
