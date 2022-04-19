@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class RedissonConfig {
     @Bean(destroyMethod="shutdown")
     RedissonClient redisson(){
-        //1、创建配置测试测试1asas
+        //1、创建配置测试配置测试
         Config config = new Config();
         config.useSingleServer()
                 .setAddress("redis://127.0.0.1:6379");

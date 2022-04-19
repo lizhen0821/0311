@@ -72,7 +72,7 @@ public class RedisConfig extends CachingConfigurerSupport{
         return factory;
     }*/
 
-    // 管理缓存
+    // 管理缓存配置测试
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
