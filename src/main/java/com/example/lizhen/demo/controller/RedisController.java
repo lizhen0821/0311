@@ -39,7 +39,7 @@ public class RedisController {
             str = object.toString();
         }else{
             //从数据库中获取信息
-            log.info("从数据库中获取数据");
+            log.info("从数据库中获取数据，测试");
             Aaaa aaaa = aaaaService.getAaaa(id);
             //数据插入缓存（set中的参数含义：key值，user对象，缓存存在时间10（long类型），时间单位）
             redisUtils.set(id,aaaa.getFdId(),10L,TimeUnit.MINUTES);
