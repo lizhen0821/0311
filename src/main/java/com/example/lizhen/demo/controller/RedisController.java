@@ -1,10 +1,13 @@
 package com.example.lizhen.demo.controller;
 
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import com.example.lizhen.demo.bean.Aaaa;
 import com.example.lizhen.demo.service.AaaaService;
 import com.example.lizhen.demo.utils.RedisUtils;
+import org.redisson.api.RBuckets;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
@@ -57,16 +60,34 @@ public class RedisController {
         //加锁（阻塞等待），默认过期时间是30秒
         lock.lock();
         try{
+            List<Aaaa> listA=new ArrayList<>();
+            Aaaa a1= new Aaaa("keyss","ss","");
+            Aaaa a2= new Aaaa("keyssss1","ss13","");
+            Aaaa a3= new Aaaa("keyssss2","ss223","11");
+            listA.add(a1);
+            listA.add(a2);
+            listA.add(a2);
+            System.out.print(listA);
+            Map<String,String>  map =listA.stream().distinct().collect(Collectors.toMap(Aaaa::getFdId,Aaaa::getFdParentId));
+            /* (key1,key2) ->key1 如果key值重复，则以key1为key */
+//            Map<String,String>  map =listA.stream().collect(Collectors.toMap(Aaaa::getFdId,Aaaa::getFdParentId,(key1,value) ->key1));
+//            System.out.println(map1);
+            RBuckets buckets = redissonClient.getBuckets();
+            Map<String, Object> set=new HashMap<>();
+            set.put("test","lizhen");
+            buckets.set(set);
+            buckets.set(map);
             //如果业务执行过长，Redisson会自动给锁续期
-            Thread.sleep(1000);
+//            Thread.sleep(1000);
             System.out.println("加锁成功，执行业务逻辑");
-        } catch (InterruptedException e) {
+        }/* catch (InterruptedException e) {
             e.printStackTrace();
-        } finally {
+        } */finally {
             //解锁，如果业务执行完成，就不会继续续期，即使没有手动释放锁，在30秒过后，也会释放锁
             lock.unlock();
         }
-
+        Object object =  redisUtils.get("13f85097fc2003bcc90ee32444a81bd0");
+        log.info("从缓存获取的数据"+ object);
         return "Hello Redisson!";
     }
 }
