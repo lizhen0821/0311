@@ -2,8 +2,10 @@ package com.example.lizhen.demo.bean;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class Aaaa {
+public class Aaaa implements Serializable {
     private String fdId;
     private String fdParentId;
     private String fdName;

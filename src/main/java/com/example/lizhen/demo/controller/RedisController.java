@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.example.lizhen.demo.bean.Aaaa;
 import com.example.lizhen.demo.service.AaaaService;
+import com.example.lizhen.demo.service.MQSender;
 import com.example.lizhen.demo.utils.RedisUtils;
 import org.redisson.api.RBuckets;
 import org.redisson.api.RLock;
@@ -29,6 +30,9 @@ public class RedisController {
 
     @Autowired
     RedissonClient redissonClient;
+
+    @Autowired
+    MQSender mqSender;
 
     @RequestMapping(value = "/helloRedis/{id}")
     public String hello(@PathVariable(value = "id") String id){
@@ -80,9 +84,15 @@ public class RedisController {
             //如果业务执行过长，Redisson会自动给锁续期
 //            Thread.sleep(1000);
             System.out.println("加锁成功，执行业务逻辑");
+
+            mqSender.send("测试测试",null);
+//            mqSender.sendUser(a1);
+            System.out.println("发送队列成功");
         }/* catch (InterruptedException e) {
             e.printStackTrace();
-        } */finally {
+        } */ catch (Exception e) {
+            e.printStackTrace();
+        } finally {
             //解锁，如果业务执行完成，就不会继续续期，即使没有手动释放锁，在30秒过后，也会释放锁
             lock.unlock();
         }
